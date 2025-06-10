@@ -16,26 +16,15 @@ public class ItemInventory {
     }
 
     protected void updateSellIn() {
-        if (item.name.equals("Sulfuras, Hand of Ragnaros")) {
-            return;
-        }
         item.sellIn--;
     }
 
     protected void updateQuality() {
-        if (item.name.equals("Sulfuras, Hand of Ragnaros")) {
-            return;
-        } else {
-            decreaseQuality();
-        }
+        decreaseQuality();
     }
 
     protected void processItem() {
-        if (item.name.equals("Sulfuras, Hand of Ragnaros")) {
-            return;
-        }
         decreaseQuality();
-
     }
 
     protected boolean isExpired() {
