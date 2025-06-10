@@ -7,7 +7,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 class GildedRoseTest {
 
     private static final int MAX_QUALITY = 50;
-    private static final int NEAR_MAX_QUALITY = 49;
     private static final int SELL_IN_EXPIRES_TODAY = 0;
 
     @Test
@@ -72,7 +71,6 @@ class GildedRoseTest {
         assertThat(item.quality).isEqualTo(3);
     }
 
-
     @Test
     void givenStandardItemWithQualityOne_whenUpdate_thenQualityDegradesToZero() {
         var item = new Item("Standard Item", 4, 1);
@@ -107,7 +105,7 @@ class GildedRoseTest {
 
     @Test
     void givenAgedItem_whenQualityIsNearMaximum_thenQualityCappedAtMaximum() {
-        var item = new Item("Aged Brie", 5, NEAR_MAX_QUALITY);
+        var item = new Item("Aged Brie", 5, MAX_QUALITY - 1);
         var gildedRose = new GildedRose(new Item[]{item});
 
         gildedRose.updateQuality();
@@ -172,6 +170,7 @@ class GildedRoseTest {
 
         gildedRose.updateQuality();
 
+        assertThat(item.quality).isEqualTo(80);
         assertThat(item.sellIn).isEqualTo(5);
     }
 
@@ -192,7 +191,7 @@ class GildedRoseTest {
 
         gildedRose.updateQuality();
 
-        assertThat(item.quality).isEqualTo(NEAR_MAX_QUALITY);
+        assertThat(item.quality).isEqualTo(49);
     }
 
     @Test
@@ -206,8 +205,8 @@ class GildedRoseTest {
     }
 
     @Test
-    void givenBackstagePass_whenQualityNearMaxAndSellInIsTenDaysOrLess_thenQualityCapsAtMax() {
-        var item = new Item("Backstage passes to a TAFKAL80ETC concert", 10, NEAR_MAX_QUALITY);
+    void givenBackstagePass_whenQualityIsOneBelowMaxAndSellInIsTenDaysOrLess_thenQualityCapsAtMax() {
+        var item = new Item("Backstage passes to a TAFKAL80ETC concert", 10, MAX_QUALITY - 1);
         var gildedRose = new GildedRose(new Item[]{item});
 
         gildedRose.updateQuality();
@@ -246,7 +245,7 @@ class GildedRoseTest {
     }
 
     @Test
-    void givenBackstagePass_whenFiveDaysLeftAndNearMaxQuality_thenCappedAtMaxQuality() {
+    void givenBackstagePass_whenFiveDaysLeftAndQualityWouldExceedMax_thenQualityIsCappedAtMax() {
         var item = new Item("Backstage passes to a TAFKAL80ETC concert", 5, 47);
         var gildedRose = new GildedRose(new Item[]{item});
 
@@ -256,8 +255,8 @@ class GildedRoseTest {
     }
 
     @Test
-    void givenBackstagePass_whenFiveDaysLeftAndAtMaxOrAboveLimit_thenQualityRemainsAtMaxQuality() {
-        var item = new Item("Backstage passes to a TAFKAL80ETC concert", 5, NEAR_MAX_QUALITY);
+    void givenBackstagePass_whenFiveDaysLeftAndQualityIsOneBelowMax_thenQualityIsCappedAtMax() {
+        var item = new Item("Backstage passes to a TAFKAL80ETC concert", 5, MAX_QUALITY - 1);
         var gildedRose = new GildedRose(new Item[]{item});
 
         gildedRose.updateQuality();
@@ -276,7 +275,7 @@ class GildedRoseTest {
     }
 
     @Test
-    void givenBackstagePass_onConcertDateAndMaxQuality_qualityDropsToZero() {
+    void givenBackstagePass_whenOnConcertDateAndMaxQuality_thenQualityDropsToZero() {
         var item = new Item("Backstage passes to a TAFKAL80ETC concert", 0, 50);
         var gildedRose = new GildedRose(new Item[]{item});
 
