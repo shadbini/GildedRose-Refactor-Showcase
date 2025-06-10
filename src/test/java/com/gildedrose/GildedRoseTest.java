@@ -74,9 +74,9 @@ class GildedRoseTest {
 
 
     @Test
-    void givenStandardItemWithQualityOne_whenUpdated_thenQualityDegradesToZero(){
+    void givenStandardItemWithQualityOne_whenUpdate_thenQualityDegradesToZero() {
         var item = new Item("Standard Item", 4, 1);
-        var gildedRose = new GildedRose(new Item[] { item });
+        var gildedRose = new GildedRose(new Item[]{item});
 
         gildedRose.updateQuality();
 
@@ -84,10 +84,9 @@ class GildedRoseTest {
     }
 
     @Test
-    void givenStandardItemWithZeroQuality_whenUpdated_thenQualityNeverBecomesNegative(){
-
+    void givenStandardItemWithZeroQuality_whenUpdate_thenQualityNeverBecomesNegative() {
         var item = new Item("First Standard Item", 4, 0);
-        var gildedRose = new GildedRose(new Item[] { item });
+        var gildedRose = new GildedRose(new Item[]{item});
 
         gildedRose.updateQuality();
 
@@ -96,9 +95,9 @@ class GildedRoseTest {
 
 
     @Test
-    void givenAgedItem_whenUpdated_thenQualityIncrease() {
+    void givenAgedItem_whenUpdate_thenQualityIncrease() {
         var item = new Item("Aged Brie", 5, 6);
-        var gildedRose = new GildedRose(new Item[] { item });
+        var gildedRose = new GildedRose(new Item[]{item});
 
         gildedRose.updateQuality();
 
@@ -109,7 +108,7 @@ class GildedRoseTest {
     @Test
     void givenAgedItem_whenQualityIsNearMaximum_thenQualityCappedAtMaximum() {
         var item = new Item("Aged Brie", 5, NEAR_MAX_QUALITY);
-        var gildedRose = new GildedRose(new Item[] { item });
+        var gildedRose = new GildedRose(new Item[]{item});
 
         gildedRose.updateQuality();
 
@@ -119,7 +118,7 @@ class GildedRoseTest {
     @Test
     void givenAgedItem_whenQualityIsAtMaximum_thenQualityRemainsUnchanged() {
         var item = new Item("Aged Brie", 5, MAX_QUALITY);
-        var gildedRose = new GildedRose(new Item[] { item });
+        var gildedRose = new GildedRose(new Item[]{item});
 
         gildedRose.updateQuality();
 
@@ -129,7 +128,7 @@ class GildedRoseTest {
     @Test
     void givenAgedItem_whenSellInExpiresToday_thenQualityIncreasesTwiceAsFast() {
         var item = new Item("Aged Brie", SELL_IN_EXPIRES_TODAY, 6);
-        var gildedRose = new GildedRose(new Item[] { item });
+        var gildedRose = new GildedRose(new Item[]{item});
 
         gildedRose.updateQuality();
 
@@ -144,5 +143,35 @@ class GildedRoseTest {
         gildedRose.updateQuality();
 
         assertThat(item.quality).isEqualTo(MAX_QUALITY);
+    }
+
+    @Test
+    void givenLegendaryItem_whenUpdate_thenSellInRemainsUnchanged() {
+        var item = new Item("Sulfuras, Hand of Ragnaros", -1, 80);
+        var gildedRose = new GildedRose(new Item[]{item});
+
+        gildedRose.updateQuality();
+
+        assertThat(item.sellIn).isEqualTo(-1);
+    }
+
+    @Test
+    void givenLegendaryItem_whenUpdate_thenQualityRemainsUnchanged() {
+        var item = new Item("Sulfuras, Hand of Ragnaros", -1, 80);
+        var gildedRose = new GildedRose(new Item[]{item});
+
+        gildedRose.updateQuality();
+
+        assertThat(item.quality).isEqualTo(80);
+    }
+
+    @Test
+    void givenLegendaryItemWithPositiveSellIn_whenUpdate_thenSellInRemainsUnchanged() {
+        var item = new Item("Sulfuras, Hand of Ragnaros", 5, 80);
+        var gildedRose = new GildedRose(new Item[]{item});
+
+        gildedRose.updateQuality();
+
+        assertThat(item.sellIn).isEqualTo(5);
     }
 }
