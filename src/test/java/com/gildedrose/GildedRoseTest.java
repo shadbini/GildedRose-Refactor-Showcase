@@ -33,4 +33,61 @@ class GildedRoseTest {
         assertThat(secondItem.quality).isEqualTo(1);
     }
 
+    @Test
+    void givenStandardItem_whenSellInDateInPast_thenQualityDegradesTwiceAsFast() {
+        var sellInInPast = -1;
+        Item item = new Item("Standard Item", sellInInPast, 4);
+        var gildedRose = new GildedRose(new Item[]{item});
+
+        gildedRose.updateQuality();
+
+        assertThat(item.quality).isEqualTo(2);
+    }
+
+    @Test
+    void givenStandardItem_whenSellInExpiresToday_thenQualityDegradesTwiceAsFast() {
+        int sellInExpiresToday = 0;
+        int startingQuality = 10;
+        var item = new Item("Standard Item", sellInExpiresToday, startingQuality);
+        var gildedRose = new GildedRose(new Item[]{item});
+
+        gildedRose.updateQuality();
+
+        assertThat(item.sellIn).isEqualTo(sellInExpiresToday - 1);
+        assertThat(item.quality).isEqualTo(startingQuality - 2);
+    }
+
+    @Test
+    void givenStandardItem_whenSellInOneDayBeforeExpiration_thenQualityDecreasesByOne() {
+        var item = new Item("Standard Item", 1, 4);
+        var gildedRose = new GildedRose(new Item[]{item});
+
+        gildedRose.updateQuality();
+
+        assertThat(item.sellIn).isEqualTo(0);
+        assertThat(item.quality).isEqualTo(3);
+    }
+
+
+    @Test
+    void givenStandardItemWithQualityOne_whenUpdated_thenQualityDegradesToZero(){
+        var item = new Item("Standard Item", 4, 1);
+        var gildedRose = new GildedRose(new Item[] { item });
+
+        gildedRose.updateQuality();
+
+        assertThat(item.quality).isZero();
+    }
+
+    @Test
+    void givenStandardItemWithZeroQuality_whenUpdated_thenQualityNeverBecomesNegative(){
+
+        var item = new Item("First Standard Item", 4, 0);
+        var gildedRose = new GildedRose(new Item[] { item });
+
+        gildedRose.updateQuality();
+
+        assertThat(item.quality).isZero();
+    }
+
 }

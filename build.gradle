@@ -25,7 +25,7 @@ test {
     useJUnitPlatform()
 }
 
-task texttest(type: JavaExec) {
+tasks.register('texttest', JavaExec) {
     mainClass.set("com.gildedrose.TexttestFixture")
     classpath = sourceSets.test.runtimeClasspath
     args "30"
