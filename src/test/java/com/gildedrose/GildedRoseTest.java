@@ -6,6 +6,10 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class GildedRoseTest {
 
+    private static final int MAX_QUALITY = 50;
+    private static final int NEAR_MAX_QUALITY = 49;
+    private static final int SELL_IN_EXPIRES_TODAY = 0;
+
     @Test
     void givenStandardItem_qualityAndSellInDecreaseEachDay() {
         int startingSellIn = 5;
@@ -90,4 +94,55 @@ class GildedRoseTest {
         assertThat(item.quality).isZero();
     }
 
+
+    @Test
+    void givenAgedItem_whenUpdated_thenQualityIncrease() {
+        var item = new Item("Aged Brie", 5, 6);
+        var gildedRose = new GildedRose(new Item[] { item });
+
+        gildedRose.updateQuality();
+
+        assertThat(item.sellIn).isEqualTo(4);
+        assertThat(item.quality).isEqualTo(7);
+    }
+
+    @Test
+    void givenAgedItem_whenQualityIsNearMaximum_thenQualityCappedAtMaximum() {
+        var item = new Item("Aged Brie", 5, NEAR_MAX_QUALITY);
+        var gildedRose = new GildedRose(new Item[] { item });
+
+        gildedRose.updateQuality();
+
+        assertThat(item.quality).isEqualTo(MAX_QUALITY);
+    }
+
+    @Test
+    void givenAgedItem_whenQualityIsAtMaximum_thenQualityRemainsUnchanged() {
+        var item = new Item("Aged Brie", 5, MAX_QUALITY);
+        var gildedRose = new GildedRose(new Item[] { item });
+
+        gildedRose.updateQuality();
+
+        assertThat(item.quality).isEqualTo(MAX_QUALITY);
+    }
+
+    @Test
+    void givenAgedItem_whenSellInExpiresToday_thenQualityIncreasesTwiceAsFast() {
+        var item = new Item("Aged Brie", SELL_IN_EXPIRES_TODAY, 6);
+        var gildedRose = new GildedRose(new Item[] { item });
+
+        gildedRose.updateQuality();
+
+        assertThat(item.quality).isEqualTo(8);
+    }
+
+    @Test
+    void givenAgedItem_whenSellInExpiresTodayAndQualityIsMax_thenQualityRemainsUnchanged() {
+        var item = new Item("Aged Brie", SELL_IN_EXPIRES_TODAY, MAX_QUALITY);
+        var gildedRose = new GildedRose(new Item[]{item});
+
+        gildedRose.updateQuality();
+
+        assertThat(item.quality).isEqualTo(MAX_QUALITY);
+    }
 }
