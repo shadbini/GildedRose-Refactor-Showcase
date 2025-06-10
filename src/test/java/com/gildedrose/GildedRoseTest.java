@@ -49,14 +49,13 @@ class GildedRoseTest {
 
     @Test
     void givenStandardItem_whenSellInExpiresToday_thenQualityDegradesTwiceAsFast() {
-        int sellInExpiresToday = 0;
         int startingQuality = 10;
-        var item = new Item("Standard Item", sellInExpiresToday, startingQuality);
+        var item = new Item("Standard Item", SELL_IN_EXPIRES_TODAY, startingQuality);
         var gildedRose = new GildedRose(new Item[]{item});
 
         gildedRose.updateQuality();
 
-        assertThat(item.sellIn).isEqualTo(sellInExpiresToday - 1);
+        assertThat(item.sellIn).isEqualTo(SELL_IN_EXPIRES_TODAY - 1);
         assertThat(item.quality).isEqualTo(startingQuality - 2);
     }
 
@@ -277,6 +276,38 @@ class GildedRoseTest {
     @Test
     void givenBackstagePass_whenOnConcertDateAndMaxQuality_thenQualityDropsToZero() {
         var item = new Item("Backstage passes to a TAFKAL80ETC concert", 0, 50);
+        var gildedRose = new GildedRose(new Item[]{item});
+
+        gildedRose.updateQuality();
+
+        assertThat(item.quality).isZero();
+    }
+
+    @Test
+    void givenConjuredItem_whenSellInIsPositive_thenQualityDegradesTwiceAsFast() {
+        var item = new Item("Conjured Mana Cake", 5, 20);
+        var gildedRose = new GildedRose(new Item[]{item});
+
+        gildedRose.updateQuality();
+
+        assertThat(item.sellIn).isEqualTo(4);
+        assertThat(item.quality).isEqualTo(18);
+    }
+
+    @Test
+    void givenConjuredItem_whenSellInIsExpires_thenQualityDegradesFourTimesAsFast() {
+        var item = new Item("Conjured Mana Cake", SELL_IN_EXPIRES_TODAY, 20);
+        var gildedRose = new GildedRose(new Item[]{item});
+
+        gildedRose.updateQuality();
+
+        assertThat(item.sellIn).isEqualTo(-1);
+        assertThat(item.quality).isEqualTo(16);
+    }
+
+    @Test
+    void givenConjuredItem_whenQualityDegradesBelowZero_thenQualityIsClampedToZero() {
+        var item = new Item("Conjured Mana Cake", 5, 1);
         var gildedRose = new GildedRose(new Item[]{item});
 
         gildedRose.updateQuality();

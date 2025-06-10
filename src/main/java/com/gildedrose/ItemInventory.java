@@ -39,7 +39,7 @@ public class ItemInventory {
 
     protected void decreaseQuality() {
         if (item.quality > 0) {
-            item.quality = item.quality - 1;
+            item.quality--;
         }
     }
 }
