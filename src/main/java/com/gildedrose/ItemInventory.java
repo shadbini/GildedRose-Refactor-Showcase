@@ -23,18 +23,7 @@ public class ItemInventory {
     }
 
     protected void updateQuality() {
-        if (item.name.equals("Backstage passes to a TAFKAL80ETC concert")) {
-            increaseQuality();
-
-            if (item.sellIn < 11) {
-                increaseQuality();
-            }
-
-            if (item.sellIn < 6) {
-                increaseQuality();
-            }
-
-        } else if (item.name.equals("Sulfuras, Hand of Ragnaros")) {
+        if (item.name.equals("Sulfuras, Hand of Ragnaros")) {
             return;
         } else {
             decreaseQuality();
@@ -42,14 +31,11 @@ public class ItemInventory {
     }
 
     protected void processItem() {
-        if (item.name.equals("Backstage passes to a TAFKAL80ETC concert")) {
-            item.quality = 0;
-        } else {
-            if (item.name.equals("Sulfuras, Hand of Ragnaros")) {
-                return;
-            }
-            decreaseQuality();
+        if (item.name.equals("Sulfuras, Hand of Ragnaros")) {
+            return;
         }
+        decreaseQuality();
+
     }
 
     protected boolean isExpired() {
