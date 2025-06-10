@@ -7,22 +7,22 @@ public class ItemInventory {
         this.item = item;
     }
 
-    protected void updateItem(Item item) {
-        updateQuality(item);
-        updateSellIn(item);
-        if (isExpired(item)) {
-            processItem(item);
+    protected void updateItem() {
+        updateQuality();
+        updateSellIn();
+        if (isExpired()) {
+            processItem();
         }
     }
 
-    protected void updateSellIn(Item item) {
+    protected void updateSellIn() {
         if (item.name.equals("Sulfuras, Hand of Ragnaros")) {
             return;
         }
         item.sellIn--;
     }
 
-    protected void updateQuality(Item item) {
+    protected void updateQuality() {
         if (item.name.equals("Aged Brie")) {
             increaseQuality(item);
         } else if (item.name.equals("Backstage passes to a TAFKAL80ETC concert")) {
@@ -38,10 +38,12 @@ public class ItemInventory {
 
         } else if (item.name.equals("Sulfuras, Hand of Ragnaros")) {
             return;
-        } else decreaseQuality(item);
+        } else {
+            decreaseQuality(item);
+        }
     }
 
-    protected void processItem(Item item) {
+    protected void processItem() {
         if (item.name.equals("Aged Brie")) {
             increaseQuality(item);
         } else if (item.name.equals("Backstage passes to a TAFKAL80ETC concert")) {
@@ -54,7 +56,7 @@ public class ItemInventory {
         }
     }
 
-    protected boolean isExpired(Item item) {
+    protected boolean isExpired() {
         return item.sellIn < 0;
     }
 
