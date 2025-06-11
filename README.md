@@ -16,6 +16,16 @@ For e.g. 10 days:
 
 You should make sure the gradle commands shown above work when you execute them in a terminal before trying to use TextTest (see below).
 
+To **build the project**, use:
+###
+
+./gradlew build
+
+To **run unit tests**, use:
+
+###
+./gradlew test
+
 
 ## Run the TextTest approval test that comes with this project
 
