@@ -11,7 +11,7 @@ public class ItemInventory {
         updateQuality();
         updateSellIn();
         if (isExpired()) {
-            processItem();
+            handleExpiredItem();
         }
     }
 
@@ -23,7 +23,7 @@ public class ItemInventory {
         decreaseQuality();
     }
 
-    protected void processItem() {
+    protected void handleExpiredItem() {
         decreaseQuality();
     }
 

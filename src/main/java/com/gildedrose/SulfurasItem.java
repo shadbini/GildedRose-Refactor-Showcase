@@ -34,6 +34,6 @@ public class SulfurasItem extends ItemInventory {
      * Sulfuras never degrades after expiration, so no expiration handling is required.
      */
     @Override
-    protected void processItem() {
+    protected void handleExpiredItem() {
     }
 }

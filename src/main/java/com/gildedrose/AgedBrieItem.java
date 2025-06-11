@@ -11,7 +11,7 @@ public class AgedBrieItem extends ItemInventory {
     }
 
     @Override
-    protected void processItem() {
+    protected void handleExpiredItem() {
         increaseQuality();
     }
 }
