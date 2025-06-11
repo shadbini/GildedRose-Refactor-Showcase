@@ -20,6 +20,11 @@ To **build the project**, use:
 ###
 
 ./gradlew build
+### Note
+
+This repo contains only the Java solution and its unit tests.  
+The `texttests` folder and approval tests mentioned in the original repo were not included.  
+Unit tests can be run via:
 
 To **run unit tests**, use:
 
